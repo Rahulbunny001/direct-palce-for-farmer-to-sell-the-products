@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="cart.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <h1>Your Shopping Cart</h1>
+    <div id="cartItems" class="cart-items">
+        <!-- Cart items will be dynamically inserted here -->
+    </div>
+    <div class="total-price">
+        Total: <span id="totalPrice">$0.00</span>
+    </div>
+
+    <!-- Payment Button -->
+    <div class="payment-section">
+        <button id="payNowBtn" class="pay-now-btn">Pay Now</button>
+    </div>
+
+    <!-- Payment Options (initially hidden) -->
+    <div id="paymentOptions" class="payment-options">
+        <button onclick="selectPayment('UPI')">UPI</button>
+        <button onclick="selectPayment('Cash on Delivery')">Cash on Delivery</button>
+        <button onclick="selectPayment('Card Payment')">Card Payment</button>
+    </div>
+    
+    <script>
+        // Function to add items to the cart
+        function addToCart(name, price, img) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            // Check if item is already in the cart
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                // If item is already in the cart, increase the quantity
+                existingItem.quantity += 1;
+            } else {
+                // If item is not in the cart, add it with quantity 1
+                cart.push({ name: name, price: price, img: img, quantity: 1 });
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCart(); // Reload cart to update the view
+        }
+
+        // Function to load the cart from local storage
+        function loadCart() {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const cartContainer = document.getElementById("cartItems");
+            const totalPriceElement = document.getElementById("totalPrice");
+
+            // Clear existing content
+            cartContainer.innerHTML = "";
+
+            // If the cart is empty, display a message
+            if (cart.length === 0) {
+                cartContainer.innerHTML = "<p>Your cart is empty.</p>";
+                totalPriceElement.textContent = "$0.00";
+                return;
+            }
+
+            // Add cart items to the DOM
+            let total = 0;
+            cart.forEach((item, index) => {
+                const itemElement = document.createElement("div");
+                itemElement.className = "cart-item"; // Add a class for styling
+                itemElement.innerHTML = `
+                    <img src="${item.img}" alt="${item.name}" class="item-image">
+                    <p>${item.name} - $${item.price.toFixed(2)} x ${item.quantity}</p>
+                    <p>Quantity: 
+                        <button onclick="decreaseQuantity(${index})">-</button> 
+                        ${item.quantity} 
+                        <button onclick="increaseQuantity(${index})">+</button>
+                    </p>
+                    <button class="remove-button" onclick="removeFromCart(${index})">Remove</button>
+                `;
+                cartContainer.appendChild(itemElement);
+                total += item.price * item.quantity;
+            });
+
+            totalPriceElement.textContent = "$" + total.toFixed(2);
+        }
+
+        // Function to increase the quantity of an item
+        function increaseQuantity(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart[index].quantity += 1;  // Increment the quantity
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCart();
+        }
+
+        // Function to decrease the quantity of an item
+        function decreaseQuantity(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (cart[index].quantity > 1) {
+                cart[index].quantity -= 1;  // Decrease the quantity
+            } else {
+                cart.splice(index, 1);  // Remove the item if quantity is 1
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCart();
+        }
+
+        // Function to remove items from the cart
+        function removeFromCart(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.splice(index, 1); // Remove the item at the specified index
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCart();
+        }
+
+        // On page load, load the cart items
+        window.onload = loadCart;
+
+        document.getElementById("payNowBtn").addEventListener("click", function() {
+            const paymentOptions = document.getElementById("paymentOptions");
+            paymentOptions.style.display = "block"; // Show payment options
+        });
+
+        // Function to handle selection of a payment option
+        function selectPayment(method) {
+            alert(`You selected ${method} as your payment method.`);
+        }
+    </script>
+</body>
+</html>

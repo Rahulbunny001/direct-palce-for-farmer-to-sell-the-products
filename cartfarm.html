@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        main {
+            padding: 20px;
+        }
+        .cart-list {
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        .cart-list table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .export-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        footer {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Cart</h1>
+</header>
+
+<main>
+    <div class="cart-list">
+        <h2>Your Cart</h2>
+        <table id="cartTable">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Cart items will be added here -->
+            </tbody>
+        </table>
+        <button class="export-btn" onclick="exportCart()">Export Cart</button>
+        <div id="message" style="margin-top: 20px;"></div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2024 Farmer's Marketplace. All rights reserved.</p>
+</footer>
+
+<script>
+    // Load cart data from localStorage and parse it
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Display cart data in the table
+    function displayCart() {
+        const cartTable = document.getElementById('cartTable').getElementsByTagName('tbody')[0];
+        cartTable.innerHTML = ''; // Clear existing rows
+
+        if (cart.length === 0) {
+            const emptyRow = cartTable.insertRow();
+            const emptyCell = emptyRow.insertCell(0);
+            emptyCell.colSpan = 4;
+            emptyCell.innerHTML = "Your cart is empty";
+            emptyCell.style.textAlign = "center";
+            return;
+        }
+
+        cart.forEach(item => {
+            const newRow = cartTable.insertRow();
+            newRow.innerHTML = `
+                <td>${item.name}</td>
+                <td>${item.quantity}</td>
+                <td>$${item.price}</td>
+                <td>${item.category}</td>
+            `;
+        });
+    }
+
+    // Export cart data to the backend
+    function exportCart() {
+        if (cart.length === 0) {
+            alert("Your cart is empty. Please add some items.");
+            return;
+        }
+
+        const cartData = { items: cart }; // Prepare the data to be sent
+
+        fetch('http://localhost:3000/api/cart/export', { // Replace with your actual API endpoint
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(cartData),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('message').innerHTML = data.message; // Show success message
+
+            // Clear localStorage and reset cart variable
+            localStorage.removeItem('cart'); // Clear the cart from local storage
+            cart.length = 0; // Reset the cart array
+            displayCart(); // Update the display to show the empty cart
+        })
+        .catch(error => {
+            console.error('Error exporting cart:', error);
+            document.getElementById('message').innerHTML = `Error exporting cart: ${error.message}`; // Show error message
+        });
+    }
+
+    // Display the cart when the page loads
+    window.onload = displayCart;
+</script>
+
+</body>
+</html>

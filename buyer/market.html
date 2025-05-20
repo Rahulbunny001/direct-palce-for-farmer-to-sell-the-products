@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="market.css"> <!-- Link to your CSS file -->
+    <style>
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        nav a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+        }
+        nav input[type="text"] {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-left: 30px;
+        }
+        nav button {
+            padding: 10px 15px;
+            background-color: #fff;
+            color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .cart {
+            position: relative;
+            margin-left: 20px;
+        }
+        .cart-icon {
+            width: 30px;
+            height: 30px;
+        }
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 5px;
+            font-size: 14px;
+        }
+        .profile-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .profile-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 250px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            padding: 10px;
+        }
+        .profile-content p, .profile-content a {
+            margin: 5px 0;
+        }
+        .profile-content a {
+            text-decoration: none;
+            color: #4CAF50;
+        }
+        section {
+            padding: 20px;
+        }
+        footer {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Customer Interface</h1>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#features">Features</a>
+        <a href="#contact" id="contactBtn">Contact</a>
+        <input type="text" id="searchBar" placeholder="Search...">
+        <button id="searchBtn" type="button">
+            <i class="fa fa-search"></i>
+        </button>
+        <div class="cart">
+            <a href="cart.html">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </a>
+        </div>
+        <div class="profile-dropdown">
+            <button class="profile-btn"><i class="fas fa-user"></i> Profile</button>
+            <div class="profile-content">
+                <p id="customerName">Name: Guest</p>
+                <p id="customerEmail">Email: guest@example.com</p>
+                <p id="customerPhone">Phone: Not provided</p>
+                <p id="customerAddress">Address: Not provided</p>
+                <p><button id="logoutBtn">Logout</button></p>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<section id="about">
+    <h2>Welcome to Our Marketplace!</h2>
+    <p>Connect directly with local farmers and purchase fresh goods straight from the source. Our platform enables farmers to sell their products directly to consumers, ensuring the best quality and prices.</p>
+</section>
+
+<section id="gallery">
+    <h2>Our Produce</h2>
+    <div class="image-gallery">
+        <a href="fresh-fruits.html" class="product-link">
+            <img src="https://tse1.mm.bing.net/th?id=OIP.22XOhxYrd_Pu__NkrGadMgHaEo&pid=Api&P=0&h=180.jpg" alt="Fresh Fruits">
+            <p>Fresh Fruits</p>
+        </a>
+        <a href="organic-vegetables.html" class="product-link">
+            <img src="https://tse1.mm.bing.net/th?id=OIP.6kCGeb-xZ39sPw_j2A6CJQHaEK&pid=Api&P=0&h=180.jpg" alt="Organic Vegetables">
+            <p>Organic Vegetables</p>
+        </a>
+        <a href="local-honey.html" class="product-link">
+            <img src="https://tse4.mm.bing.net/th?id=OIP.uYEzKRGoRrZj5Kkvk6HmGQHaE8&pid=Api&P=0&h=180.jpg" alt="Dairy Products">
+            <p>Dairy Products</p>
+        </a>
+    </div>
+</section>
+
+<section id="features">
+    <h2>Features</h2>
+    <div class="features">
+        <div class="feature">
+            <img src="https://www.thegardener.co.za/wp-content/uploads/2018/05/Fotolia_79072223_Subscription_Monthly_XXL.jpg" alt="Fresh Products">
+            <h3>Fresh Products</h3>
+            <p>Buy seasonal and fresh produce directly from farmers in your area.</p>
+        </div>
+        <div class="feature">
+            <img src="https://tse1.mm.bing.net/th?id=OIP.JRci3Y-hj7Y0WLr38v7dxAHaJ4&pid=Api&P=0&h=180.jpg" alt="Support Local">
+            <h3>Help Farmers</h3>
+            <p>By donating some funds directly to farmers, you can support farmers.</p>
+        </div>
+        <div class="feature">
+            <img src="https://img.freepik.com/premium-vector/easy-use-badge-icon-stamp-logo-vector-stock-illustration_100456-10604.jpg" alt="Easy to Use">
+            <h3>Easy to Use</h3>
+            <p>Our user-friendly platform makes buying and selling a breeze.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Modal -->
+<div id="contactModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Contact Us</h2>
+        <form>
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+            <label for="phone">Phone:</label><br>
+            <input type="text" id="phone" name="phone" required><br><br>
+            <label for="message">Message:</label><br>
+            <textarea id="message" name="message" rows="5" required></textarea><br><br>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 Organic Farmers Marketplace. All rights reserved.</p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Profile dropdown toggle
+        document.querySelector('.profile-btn').addEventListener('click', function () {
+            document.querySelector('.profile-content').style.display = 'block';
+        });
+
+        // Close modal on click outside
+        window.onclick = function (event) {
+            if (event.target.matches('.modal')) {
+                event.target.style.display = 'none';
+            }
+        };
+
+        // Load user data from sessionStorage
+        const customer = JSON.parse(sessionStorage.getItem('customer'));
+        if (!customer) {
+            // If no customer data, redirect to login
+            window.location.href = 'D:WtProject/user/customer-login.html';
+        } else {
+            // If logged in, show customer details
+            document.getElementById('customerName').textContent = 'Name: ' + customer.name;
+            document.getElementById('customerEmail').textContent = 'Email: ' + customer.email;
+            document.getElementById('customerPhone').textContent = 'Phone: ' + customer.phone || 'Not provided';
+            document.getElementById('customerAddress').textContent = 'Address: ' + customer.address || 'Not provided';
+        }
+
+        // Logout function
+        document.getElementById('logoutBtn').addEventListener('click', function () {
+            sessionStorage.clear();
+            window.location.href = 'login.html';
+        });
+
+        // Search functionality
+        document.getElementById('searchBtn').addEventListener('click', function () {
+            const query = document.getElementById('searchBar').value;
+            if (query.trim() !== '') {
+                alert('Searching for: ' + query);
+            }
+        });
+
+        // Contact modal functionality
+        var contactModal = document.getElementById('contactModal');
+        var contactBtn = document.getElementById('contactBtn');
+        var closeModal = document.querySelector('.close');
+
+        contactBtn.onclick = function () {
+            contactModal.style.display = 'block';
+        }
+
+        closeModal.onclick = function () {
+            contactModal.style.display = 'none';
+        }
+
+    });
+</script>
+
+</body>
+</html>

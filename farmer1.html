@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Dashboard</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px auto;
+            max-width: 1200px;
+            flex-wrap: wrap;
+        }
+        section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px;
+            flex: 1 1 30%;
+            min-width: 300px;
+        }
+        h2 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], input[type="number"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .product-list {
+            margin-top: 20px;
+        }
+        .product {
+            background: #f1f1f1;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .analysis {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .language-selector {
+            margin: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 id="dashboardTitle">Farmer Dashboard</h1>
+</header>
+
+<div class="container">
+    <section>
+        <h2 id="addProductTitle">Add Your Product</h2>
+        <form id="addProductForm">
+            <label for="productName" id="productNameLabel">Product Name:</label>
+            <input type="text" id="productName" required>
+
+            <label for="productPrice" id="productPriceLabel">Price ($):</label>
+            <input type="number" id="productPrice" required>
+
+            <label for="productQuantity" id="productQuantityLabel">Quantity:</label>
+            <input type="number" id="productQuantity" required>
+
+            <label for="productDescription" id="productDescriptionLabel">Description:</label>
+            <textarea id="productDescription" rows="4" required></textarea>
+
+            <button type="submit" id="addProductButton">Add Product</button>
+        </form>
+
+        <div class="product-list" id="productList">
+            <h3>Your Products</h3>
+            <!-- Dynamic product list will be populated here -->
+        </div>
+    </section>
+
+    <section>
+        <h2 id="earningsTitle">Your Earnings</h2>
+        <p>Total Earnings: <span id="totalEarnings">$0.00</span></p>
+        <p>Recent Sales:</p>
+        <ul id="recentSales">
+            <!-- List of recent sales will be populated here -->
+        </ul>
+    </section>
+
+    <section>
+        <h2 id="growthTrackerTitle">Growth Tracker</h2>
+        <p>Total Products Added: <span id="totalProducts">0</span></p>
+        <div class="analysis">
+            <h3>Analysis</h3>
+            <p>Average Price per Product: <span id="averagePrice">$0.00</span></p>
+            <p>Total Quantity Sold: <span id="totalQuantitySold">0</span></p>
+        </div>
+    </section>
+</div>
+
+<script>
+// Initialize variables
+let totalEarnings = 0;
+let totalProducts = 0;
+let totalQuantitySold = 0;
+let productPrices = [];
+
+// Add product event
+document.getElementById('addProductForm').onsubmit = function(event) {
+    event.preventDefault(); // Prevent form submission
+    
+    const productName = document.getElementById('productName').value;
+    const productPrice = parseFloat(document.getElementById('productPrice').value);
+    const productQuantity = parseInt(document.getElementById('productQuantity').value);
+    const productDescription = document.getElementById('productDescription').value;
+
+    // Create a new product entry
+    const productList = document.getElementById('productList');
+    const newProduct = document.createElement('div');
+    newProduct.className = 'product';
+    newProduct.innerHTML = `<strong>${productName}</strong><br>
+                            Price: $${productPrice}<br>
+                            Quantity: ${productQuantity}<br>
+                            Description: ${productDescription}`;
+    productList.appendChild(newProduct);
+
+    // Update totals
+    totalEarnings += productPrice * productQuantity;
+    totalProducts += productQuantity;
+    totalQuantitySold += productQuantity;
+    productPrices.push(productPrice);
+
+    // Update display
+    document.getElementById('totalEarnings').innerText = `$${totalEarnings.toFixed(2)}`;
+    document.getElementById('totalProducts').innerText = totalProducts;
+    document.getElementById('totalQuantitySold').innerText = totalQuantitySold;
+
+    // Calculate average price
+    const averagePrice = totalEarnings / (totalProducts || 1); // Prevent division by zero
+    document.getElementById('averagePrice').innerText = `$${averagePrice.toFixed(2)}`;
+
+    // Clear the form fields
+    document.getElementById('addProductForm').reset();
+
+    // Log recent sales
+    const recentSales = document.getElementById('recentSales');
+    const saleItem = document.createElement('li');
+    saleItem.innerText = `${productQuantity} x ${productName} sold for $${(productPrice * productQuantity).toFixed(2)}`;
+    recentSales.appendChild(saleItem);
+};
+

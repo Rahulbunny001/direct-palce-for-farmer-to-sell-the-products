@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organic Vegetables</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="organic-vegetables.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="market.html">Logo</a> <!-- Replace with your logo link -->
+        </div>
+        <div class="search-container">
+            <input type="text" placeholder="Search for vegetables..." class="search-input">
+            <button class="search-button"><i class="fa fa-search"></i></button>
+        </div>
+        <div class="cart">
+            <a href="cart.html" class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cartCount">0</span> <!-- Cart count -->
+            </a>
+        </div>
+    </nav>
+
+    <h1>Welcome to Organic Vegetables</h1>
+    <p>Explore our range of fresh organic vegetables.</p>
+
+    <div class="products">
+        <div class="product">
+            <img src="https://tse4.mm.bing.net/th?id=OIP.F6HRv5bTjtZLWe70YzThCgHaF9&pid=Api&P=0&h=180.jpg" alt="Carrot" class="product-image"> <!-- Replace with your image -->
+            <h2>Carrot</h2>
+            <p>Price: $1.00</p>
+            <button onclick="addToCart('Carrot', 1.00, 'https://tse4.mm.bing.net/th?id=OIP.F6HRv5bTjtZLWe70YzThCgHaF9&pid=Api&P=0&h=180.jpg')">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="https://tse4.mm.bing.net/th?id=OIP.goDVMUZSOuwndO4ACzNAKAHaHp&pid=Api&P=0&h=180.jpg" alt="Tomato" class="product-image"> <!-- Replace with your image -->
+            <h2>Tomato</h2>
+            <p>Price: $0.75</p>
+            <button onclick="addToCart('Tomato', 0.75, 'https://tse4.mm.bing.net/th?id=OIP.goDVMUZSOuwndO4ACzNAKAHaHp&pid=Api&P=0&h=180.jpg')">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="https://tse4.mm.bing.net/th?id=OIP.U0EYTacd3Og1ch5IrU9SigHaGB&pid=Api&P=0&h=180.jpg" alt="Broccoli" class="product-image"> <!-- Replace with your image -->
+            <h2>Broccoli</h2>
+            <p>Price: $1.50</p>
+            <button onclick="addToCart('Broccoli', 1.50, 'https://tse4.mm.bing.net/th?id=OIP.U0EYTacd3Og1ch5IrU9SigHaGB&pid=Api&P=0&h=180.jpg')">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="https://www.thespruceeats.com/thmb/vh3pzGIKw5gzZPRXbOLdeX-4-cE=/2127x1409/filters:fill(auto,1)/Headsofgreencabbage-5bfda38346e0fb00264606e3.jpg" alt="cabbage" class="product-image"> <!-- Replace with your image -->
+            <h2>cabbage</h2>
+            <p>Price: $2.50</p>
+            <button onclick="addToCart('cabbage', 2.50, 'https://www.thespruceeats.com/thmb/vh3pzGIKw5gzZPRXbOLdeX-4-cE=/2127x1409/filters:fill(auto,1)/Headsofgreencabbage-5bfda38346e0fb00264606e3.jpg')">Add to Cart</button>
+        </div>
+    </div>
+
+
+
+    <footer>
+    <p>&copy; 2024 Direct Marketplace for Farmers. All rights reserved.</p>
+</footer>
+
+
+
+    <script>
+        // Function to add items to cart and save to local storage
+        function addToCart(name, price, img) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.push({ name: name, price: price, img: img });
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount(); // Update cart count on page
+        }
+
+        // Function to update the cart count display
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            document.getElementById("cartCount").textContent = cart.length;
+        }
+
+        // Update cart count on page load
+        window.onload = updateCartCount;
+    </script>
+</body>
+</html>
